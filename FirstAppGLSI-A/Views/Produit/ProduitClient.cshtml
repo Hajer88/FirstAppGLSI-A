@@ -1,0 +1,9 @@
+﻿@model FirstAppGLSI_A.Models.ProduitClientVM
+
+@foreach(var item in Model.clients)
+{
+    <a asp-area="" asp-controller="Produit" asp-action="DetailsClient" asp-route-id="@item.Id">@item.Name</a>
+    
+}
+
+<h3>@Model.produit.Name</h3>
