@@ -5,21 +5,30 @@ namespace FirstAppGLSI_A.Controllers
 {
     public class ProduitController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public ProduitController(ApplicationDbContext _context)
+        {
+            this._context = _context;
+        }
         //Ajouter des enregistrements d'une manière statique à Produit
         public IActionResult Index()
         {
+            var produits = _context.produits.ToList();
+            //Afficher les produits directement à partir de la base de données
+
             //Syntaxe d'initialisation
-            List<Produit> produits = new List<Produit>()
-            {
-                new Produit(){Name="Produit 1"},
-                new Produit(){Name="Produit 2"},
-            };
+            //List<Produit> produits = new List<Produit>()
+            //{
+            //    new Produit(){Name="Produit 1"},
+            //    new Produit(){Name="Produit 2"},
+            //};
             return View(produits);
         }
-        public IActionResult Edit(int id)
-        {
-            return Content("Id   " + id);
-        }
+        //public IActionResult Edit(int id)
+        //{
+        //    return Content("Id   " + id);
+        //}
+        
         public IActionResult ProduitClient()
         {
             Produit p = new Produit() { Name = "Produit 1" };
