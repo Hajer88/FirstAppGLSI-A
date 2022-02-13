@@ -23,13 +23,46 @@ namespace FirstAppGLSI_A.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Categorie categorie)
         {
-            if (ModelState.IsValid)
-            {
+           
                 _db.categorie.Add(categorie);
                 _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(categorie);
+            
         }
+        public IActionResult Edit(int? id)
+        {
+            if(id==null) { return NotFound(); }
+            var cat = _db.categorie.Find(id);
+            var cat2 = _db.categorie.First(c => c.Id == id);
+            return View(cat);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Categorie cat)
+        {
+            _db.categorie.Update(cat);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null) { return NotFound(); }
+            var cat = _db.categorie.Find(id);
+            var cat2 = _db.categorie.First(c => c.Id == id);
+            return View(cat);
+
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
+        {
+            var cat = _db.categorie.Find(id);
+            _db.categorie.Remove(cat);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
     }
 }
+

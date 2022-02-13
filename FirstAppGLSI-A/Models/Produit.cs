@@ -11,5 +11,6 @@
         //    get { return name; }
         //    set { name = value; }
         //}
+        public ICollection<CategorieProduit> categories { get; set; }
     }
 }

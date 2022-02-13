@@ -3,6 +3,7 @@ using FirstAppGLSI_A.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstAppGLSI_A.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220211135627_AddManyToManyDirectRelationship")]
+    partial class AddManyToManyDirectRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,6 +22,21 @@ namespace FirstAppGLSI_A.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CategorieProduit", b =>
+                {
+                    b.Property<int>("categoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("produitsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("categoriesId", "produitsId");
+
+                    b.HasIndex("produitsId");
+
+                    b.ToTable("CategorieProduit");
+                });
 
             modelBuilder.Entity("FirstAppGLSI_A.Models.Categorie", b =>
                 {
@@ -36,21 +53,6 @@ namespace FirstAppGLSI_A.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("categorie");
-                });
-
-            modelBuilder.Entity("FirstAppGLSI_A.Models.CategorieProduit", b =>
-                {
-                    b.Property<int>("ProduitId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategorieId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProduitId", "CategorieId");
-
-                    b.HasIndex("CategorieId");
-
-                    b.ToTable("categorieProduits");
                 });
 
             modelBuilder.Entity("FirstAppGLSI_A.Models.Produit", b =>
@@ -92,23 +94,19 @@ namespace FirstAppGLSI_A.Migrations
                     b.ToTable("souscategories");
                 });
 
-            modelBuilder.Entity("FirstAppGLSI_A.Models.CategorieProduit", b =>
+            modelBuilder.Entity("CategorieProduit", b =>
                 {
-                    b.HasOne("FirstAppGLSI_A.Models.Categorie", "categorie")
-                        .WithMany("produits")
-                        .HasForeignKey("CategorieId")
+                    b.HasOne("FirstAppGLSI_A.Models.Categorie", null)
+                        .WithMany()
+                        .HasForeignKey("categoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FirstAppGLSI_A.Models.Produit", "produit")
-                        .WithMany("categories")
-                        .HasForeignKey("ProduitId")
+                    b.HasOne("FirstAppGLSI_A.Models.Produit", null)
+                        .WithMany()
+                        .HasForeignKey("produitsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("categorie");
-
-                    b.Navigation("produit");
                 });
 
             modelBuilder.Entity("FirstAppGLSI_A.Models.SousCategorie", b =>
@@ -124,14 +122,7 @@ namespace FirstAppGLSI_A.Migrations
 
             modelBuilder.Entity("FirstAppGLSI_A.Models.Categorie", b =>
                 {
-                    b.Navigation("produits");
-
                     b.Navigation("sousCategories");
-                });
-
-            modelBuilder.Entity("FirstAppGLSI_A.Models.Produit", b =>
-                {
-                    b.Navigation("categories");
                 });
 #pragma warning restore 612, 618
         }
