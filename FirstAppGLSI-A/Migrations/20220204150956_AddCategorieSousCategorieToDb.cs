@@ -38,7 +38,9 @@ namespace FirstAppGLSI_A.Migrations
                         column: x => x.categorieId,
                         principalTable: "categorie",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                        //onCreate:ReferentialAction.Cascade
+                        );
                 });
 
             migrationBuilder.CreateIndex(
